@@ -1,3 +1,6 @@
+## Telegram Web App Bots
+A sample of the telegram web app bots for see how it works and use it on your own.
+
 # How config our bot?
 1. add your telegram bot token and your site path inside `bot/config.php`
 2. set webhook to your bot for the `bot/index.php` file.
@@ -9,3 +12,6 @@
 8. then send the Button label name.
 
 Your bot is ready. Enjoy.
+
+
+
