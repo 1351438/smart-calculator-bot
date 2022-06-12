@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link href="assets/css/app.css">
+    <style>
+        :root {
+            --bs-blue: #0d6efd;
+            --bs-indigo: #6610f2;
+            --bs-purple: #6f42c1;
+            --bs-pink: #d63384;
+            --bs-red: #dc3545;
+            --bs-orange: #fd7e14;
+            --bs-yellow: #ffc107;
+            --bs-green: #31b87a;
+            --bs-teal: #20c997;
+            --bs-cyan: #0dcaf0;
+            --bs-white: #fff;
+            --bs-gray: #6c757d;
+            --bs-gray-dark: #343a40;
+            --bs-gray-100: #f8f9fa;
+            --bs-gray-200: #e9ecef;
+            --bs-gray-300: #dee2e6;
+            --bs-gray-400: #ced4da;
+            --bs-gray-500: #adb5bd;
+            --bs-gray-600: #6c757d;
+            --bs-gray-700: #495057;
+            --bs-gray-800: #343a40;
+            --bs-gray-900: #212529;
+            --bs-primary: var(--tg-theme-button-color);
+            --bs-secondary: #6c757d;
+            --bs-success: #31b87a;
+            --bs-info: #0dcaf0;
+            --bs-warning: #ffc107;
+            --bs-danger: #dc3545;
+            --bs-light: #f8f9fa;
+            --bs-dark: #212529;
+            --bs-primary-rgb: 13, 110, 253;
+            --bs-secondary-rgb: 108, 117, 125;
+            --bs-success-rgb: 25, 135, 84;
+            --bs-info-rgb: 13, 202, 240;
+            --bs-warning-rgb: 255, 193, 7;
+            --bs-danger-rgb: 220, 53, 69;
+            --bs-light-rgb: 248, 249, 250;
+            --bs-dark-rgb: 33, 37, 41;
+            --bs-white-rgb: 255, 255, 255;
+            --bs-black-rgb: 0, 0, 0;
+            --bs-body-color-rgb: 33, 37, 41;
+            --bs-body-bg-rgb: 255, 255, 255;
+            --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            --bs-body-font-family: var(--bs-font-sans-serif);
+            --bs-body-font-size: 1rem;
+            --bs-body-font-weight: 400;
+            --bs-body-line-height: 1.5;
+            --bs-body-color: var(--tg-theme-text-color);
+            --bs-body-bg: var(--tg-theme-bg-color)
+        }
+
+        .btn {
+            background-color: var(--tg-theme-button-color) !important;
+            color: var(--tg-theme-button-text-color);
+        }
+
+        .btn:focus,
+        .btn:active {
+            box-shadow: rgba(6, 6, 8, 0.33) !important;
+            outline: 1px !important;
+        }
+
+        .wrapper {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+        }
+
+        .field {
+            background-color: #e8ebef;
+            border-radius: 8px;
+            color: #323334;
+            height: 80px;
+        }
+
+        .field #quiz {
+            font-size: 14px;
+            color: #717679;
+            padding: 8px;
+        }
+
+        .field #answer {
+            font-size: 33px;
+            color: #323334;
+            padding: 8px;
+            position: fixed;
+            top: 34px;
+        }
+
+        .calcbtn {
+            width: 100%;
+            height: 60px;
+            font-size: 30px;
+            border-radius: 8px;
+        }
+
+        .numbtn {
+            background-color: #e9ecf0 !important;
+            color: var(--tg-theme-button-color) !important;
+        }
+
+        .darkbtn {
+            background-color: #4d4d4f !important;
+            color: white !important;
+        }
+
+        span {
+            height: 8px;
+        }
+
+        .icon-btn {
+            border: none;
+            color: gray;
+            background: transparent;
+            float: right;
+            bottom: 8px;
+            right: 8px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12">
+            <div class="field">
+                <p id="quiz">0</p>
+                <p id="answer">0</p>
+                <button class="icon-btn" onclick="doAction('bs')"><i class="fa-solid fa-delete-left"></i></button>
+            </div>
+        </div>
+        <span class="col-12"></span>
+        <div class="col-3">
+            <button class="btn calcbtn" onclick="doAction('+')">+</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn" onclick="doAction('-')">-</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn" onclick="doAction('bs')"><i class="fa solid fa-delete-left"></i></button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn" onclick="doAction('c')">C</button>
+        </div>
+        <span class="col-12"></span>
+        <div class="col-3">
+            <button class="btn calcbtn numbtn" onclick="doAction('7')">7</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn numbtn" onclick="doAction('8')">8</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn numbtn" onclick="doAction('9')">9</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn " onclick="doAction('*')">×</button>
+        </div>
+        <span class="col-12"></span>
+        <div class="col-3">
+            <button class="btn calcbtn numbtn" onclick="doAction('4')">4</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn numbtn" onclick="doAction('5')">5</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn numbtn" onclick="doAction('6')">6</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn" onclick="doAction('/')">÷</button>
+        </div>
+        <span class="col-12"></span>
+        <div class="col-3">
+            <button class="btn calcbtn numbtn" onclick="doAction('1')">1</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn numbtn" onclick="doAction('2')">2</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn numbtn" onclick="doAction('3')">3</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn" onclick="doAction('+/-')">+⁄-</button>
+        </div>
+        <span class="col-12"></span>
+        <div class="col-9">
+            <button class="btn calcbtn numbtn" onclick="doAction('0')">0</button>
+        </div>
+        <div class="col-3">
+            <button class="btn calcbtn numbtn" onclick="doAction('.')">.</button>
+        </div>
+        <span class="col-12"></span>
+        <span class="col-12"></span>
+        <span class="col-12"></span>
+        <span class="col-12"></span>
+        <span class="col-12"></span>
+        <div class="col-12">
+            <button class="btn calcbtn darkbtn" onclick="sendDataToUser()" style="font-size: 16px">
+                <span dir="rtl" id="message"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+
+<script>
+    var quiz = '0';
+
+    $(document).ready(() => {
+        $("#text").text("HI");
+        mainButton = window.Telegram.WebApp.MainButton;
+        mainButton.setText("محسابه");
+        mainButton.onClick(() => {
+            quiz = eval(quiz);
+            $("#answer").text(eval(quiz));
+            $("#quiz").text(eval(quiz));
+
+        })
+        mainButton.show();
+
+        $("#message").text("ارسال پاسخ به " + window.Telegram.WebApp.initDataUnsafe['user']['first_name']);
+        window.Telegram.WebApp.ready();
+    });
+
+    function sendDataToUser() {
+        window.Telegram.WebApp.sendData(JSON.stringify({
+            "user_id": window.Telegram.WebApp.initDataUnsafe['user']['id'],
+            "quiz": quiz,
+            "answer": eval(quiz)
+        }));
+    }
+
+    function doAction(action) {
+        switch (action) {
+            case "bs":
+                quiz = quiz.substr(0, quiz.length - 1);
+                break;
+            case "c":
+                quiz = '0';
+                break;
+            case "+":
+                pullSign("+");
+                break;
+            case "-":
+                pullSign("-");
+                break;
+            case "*":
+                pullSign("*");
+                break;
+            case "/":
+                pullSign("/");
+                break;
+            case "+/-":
+                pullNegativeAndPlus();
+                break;
+            default:
+                if (quiz === '0') {
+                    quiz = '';
+                }
+                    quiz += action;
+                break;
+        }
+        if (quiz === "") {
+            quiz = 0;
+        }
+        $("#quiz").text(quiz);
+        $("#answer").text(eval(quiz));
+    }
+
+    function pullNegativeAndPlus() {
+        if (['+', '-', '*', '/'].indexOf(quiz.substr(quiz.length - 1, quiz.length)) !== -1) {
+            if (quiz.substr(quiz.length - 1, quiz.length) === "+") {
+                quiz = quiz.substr(0, quiz.length - 1) + "-";
+            } else {
+                quiz = quiz.substr(0, quiz.length - 1) + "+";
+            }
+        } else {
+            quiz += "+";
+        }
+    }
+
+    function pullSign(sign) {
+        if (['+', '-', '*', '/'].indexOf(quiz.substr(quiz.length - 1, quiz.length)) !== -1) {
+            quiz = quiz.substr(0, quiz.length - 1) + sign;
+        } else {
+            quiz += sign;
+        }
+    }
+</script>
+</html>
